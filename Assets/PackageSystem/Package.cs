@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
-
 
 namespace OneGame.Package
 {
@@ -17,30 +15,18 @@ namespace OneGame.Package
         public List<ItemCell> Ingredients { get; set; }
         public List<ItemCell> Skills { get; set; }
 
-        public void Add(Item itemToAdd,int count)
+        public string Add(Item itemToAdd,int count)
         {
-            var result = AllItems.FindAll((i) => { return i.sItem.Ids == itemToAdd.Ids && i.sCount < 99; });
+            var result = AllItems.FindAll((i) => { return i.sItem.Ids == itemToAdd.Ids; });
             if (result != null && result.Count > 0)
             {
-                if (result[0].sCount + count > MaxCellCount)
-                {
-                    result[0].sCount = MaxCellCount;
-                    AllItems.Add(new ItemCell() { sCount = result[0].sCount + count - MaxCellCount, sItem = itemToAdd, sType = result[0].sType });
-                }
-                else if (result[0].sCount + count == MaxCellCount)
-                {
-                    result[0].sCount = MaxCellCount;
-                }
-                else
-                {
-                    result[0].sCount += count;
-                }
+                result[0].sCount += count;
             }
+            return ReturnCode.OK;
         }
 
         public bool IfHas(string ids,int count)
         {
-            
             var results = AllItems.FindAll((i) => { return i.sItem.Ids == ids; });
 
             int allCount = 0;
@@ -52,7 +38,36 @@ namespace OneGame.Package
             }
 
             return allCount >= count ? false : true;
+        }
 
+        public string Consume(Item item,int count)
+        {
+            if (IfHas(item.Ids, count))
+            {
+                if (!item.ConsumeFromPackage(this))
+                {
+                    return ReturnCode.Error;
+                }
+                var itemCell = AllItems.Find((i) => { return i.sItem.Ids == item.Ids; });
+
+                itemCell.sCount -= count;
+                
+                return ReturnCode.OK;
+            }
+
+            Debug.Log("doesn't has enough items to consume");
+            return ReturnCode.DoesntHaveEnoughItems;
+        }
+
+        private int CountItem(string itemIds)
+        {
+            var itemCells = AllItems.FindAll((i) => { return i.sItem.Ids == itemIds; });
+            int count = 0;
+            for (int i = 0; i < itemCells.Count; i++)
+            {
+                count += itemCells[i].sCount;
+            }
+            return count;
         }
     }
 
@@ -71,4 +86,3 @@ namespace OneGame.Package
         Skills,
     }
 }
-
