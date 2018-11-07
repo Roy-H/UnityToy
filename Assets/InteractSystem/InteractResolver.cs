@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using OneGame.Input;
 
 /// <summary>
 /// DialogOpen
@@ -79,7 +80,7 @@ public class InteractResolver : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown(ButtonsName.ButtonA))
         {
             var hits = Physics.RaycastAll(new Ray(transform.position, transform.forward), 10f, 1 << LayerMask.NameToLayer("Interaction"));
             if (hits != null && hits.Length > 0)

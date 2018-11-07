@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using OneGame.Input;
 using System;
 
 public struct TextStruct
@@ -52,14 +53,14 @@ public class DialogManager : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.02f);
             }
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown(ButtonsName.ButtonA))
             {
                 isRapidMode = true;
             }
         }
         while (true)
         {
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown(ButtonsName.ButtonA))
             {
                 yield break;
             }
@@ -84,14 +85,14 @@ public class DialogManager : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.02f);
             }
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown(ButtonsName.ButtonA))
             {
                 isRapidMode = true;
             }
         }
         while (true)
         {
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown(ButtonsName.ButtonA))
             {
                 yield break;
             }
